@@ -1,18 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Button, FormControl, InputLabel, Input } from "@material-ui/core";
 import Todo from "./Todo";
+import db from "./firebase";
+import firebase from "firebase";
 
 const App = () => {
-	const [todos, setTodos] = useState([
-		"Take dogs for a walk",
-		"Take the rubbish out",
-	]);
-
+	const [todos, setTodos] = useState([]);
 	const [input, setInput] = useState("");
 
+	useEffect(() => {
+		db.collection("Todos")
+			.orderBy("timestamp", "desc")
+			.onSnapshot((snapshot) => {
+				// console.log(snapshot.docs.map((doc) => doc.data()));
+				setTodos(snapshot.docs.map((doc) => doc.data().task));
+			});
+	}, []);
+
 	const addTodo = (e) => {
-		setTodos([...todos, input]);
+		db.collection("Todos").add({
+			task: input,
+			timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+		});
 		setInput("");
 		e.preventDefault();
 	};
