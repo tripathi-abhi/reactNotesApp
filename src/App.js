@@ -14,7 +14,9 @@ const App = () => {
 			.orderBy("timestamp", "desc")
 			.onSnapshot((snapshot) => {
 				// console.log(snapshot.docs.map((doc) => doc.data()));
-				setTodos(snapshot.docs.map((doc) => doc.data().task));
+				setTodos(
+					snapshot.docs.map((doc) => ({ id: doc.id, task: doc.data().task }))
+				);
 			});
 	}, []);
 
