@@ -15,7 +15,11 @@ const App = () => {
 			.onSnapshot((snapshot) => {
 				// console.log(snapshot.docs.map((doc) => doc.data()));
 				setTodos(
-					snapshot.docs.map((doc) => ({ id: doc.id, task: doc.data().task }))
+					snapshot.docs.map((doc) => ({
+						id: doc.id,
+						task: doc.data().task,
+						status: doc.data().status,
+					}))
 				);
 			});
 	}, []);
@@ -24,6 +28,7 @@ const App = () => {
 		db.collection("Todos").add({
 			task: input,
 			timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+			status: false,
 		});
 		setInput("");
 		e.preventDefault();
@@ -31,7 +36,6 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<h1>Hello world!</h1>
 			<form>
 				<FormControl>
 					<InputLabel>Write a Todo here...</InputLabel>

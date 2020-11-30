@@ -1,3 +1,7 @@
 .todo-list {
 	text-align: center;
 }
+
+.Complete {
+	text-decoration: line-through;
+}
